@@ -8,6 +8,14 @@ async function createArticle(req,res, next){
     console.log("user payload: ", user);
 
     try{
+        //check if user has access to write
+        if (!hasWriteAccess(user.user_type)) {
+            res.json({
+                message: 'Access denied, you need to be either an author or a guest author to write an article.',
+                success: false
+            });
+        }
+
         if (title.length < 5 && content.length < 20){
             res.json({
                 message: 'Title must be at least 5 characters long while content must be at least 20 characters long',
@@ -39,15 +47,24 @@ async function createArticle(req,res, next){
     }
 };
 
+//to ensure specific types of users are using the create account 
+function hasWriteAccess(user_type){
+    return ["AUTHOR", "GUEST_AUTHOR"].includes(user_type)
+}
+
 async function fetchArticle(req, res, next) {
+
 }
 async function fetchArticles(req, res, next) {
+
 }
 
 async function deleteArticle(req, res, next) {
+
 }
 
 async function deleteArticles(req, res, next) {
+
 }
 
 
@@ -58,4 +75,3 @@ module.exports = {
     deleteArticle,
     deleteArticles
 }
-;
