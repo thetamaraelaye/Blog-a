@@ -39,7 +39,23 @@ async function createArticle(req,res, next){
     }
 };
 
+async function fetchArticle(req, res, next) {
+}
+async function fetchArticles(req, res, next) {
+}
+
+async function deleteArticle(req, res, next) {
+}
+
+async function deleteArticles(req, res, next) {
+}
 
 
-
-module.exports = {createArticle};
+module.exports = {
+    createArticle,
+    fetchArticle,
+    fetchArticles,
+    deleteArticle,
+    deleteArticles
+}
+;
