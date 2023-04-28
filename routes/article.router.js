@@ -1,12 +1,12 @@
 const articleRouter = require('express').Router();
 const {
-    createArticle, fetchArticle, fetchArticles, deleteArticle, deleteArticles
+    createArticle, fetchArticle, fetchArticles, deleteArticle
 } = require('../controllers/article.controller');
-const verifyAuth = require('../middleware/auth.middleware');
+const verifyAuth = require('../middlewares/auth.middleware');
 
 articleRouter.post('/create', verifyAuth, createArticle);
-articleRouter.get('post/:id', fetchArticle); //
+articleRouter.get('/fetch/:id', fetchArticle); //
 articleRouter.get('/all', fetchArticles);
 articleRouter.post('/delete/:id', verifyAuth, deleteArticle);
 
-module.exports = { articleRouter };
+module.exports = articleRouter;

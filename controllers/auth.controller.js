@@ -7,14 +7,14 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 //next is a function that moves from one functionality to the next
-async function createUser(req, res, next) {
+async function createUser(req, res) {
     const { user_name, first_name, last_name, user_type, dob, password } = req.body; //use req.body function o destructure the props of userModel
     //check if the user has been created
     //if user exist an error message is returned
     //prevents user duplication and errors
     try {
         //check if user exist
-        const checkUserExist = await userModel.findOne({user_name: user_name}) .exec();
+        const checkUserExist = await userModel.findOne({user_name: user_name}).exec();
         // the findone function takes in an object of arg that would be the filter used to search the field req
         if (checkUserExist) {
             //this means there is a user
@@ -51,7 +51,7 @@ async function createUser(req, res, next) {
     }
 };
 
-async function login(req, res, next) {
+async function login(req, res) {
     const {user_name, password } = req.body;
     try {
         const checkUserExist = await userModel.findOne({user_name: user_name }).exec();
@@ -64,11 +64,11 @@ async function login(req, res, next) {
             });
         };
         //ifuser exist, check if password is correct
-        const isCorrect = await bcrypt.compareSync(password, checkUserExist.password);
+        // const isCorrect = await bcrypt
 
-        console.log('paswword_test: ', isCorrect);
+        //console.log('paswword_test: ', isCorrect);
         //if it is not the correct password a response is sent error
-        if(!isCorrectPassword){
+        if(!await bcrypt.compareSync(password, checkUserExist.password)){
             return res.json({
                 success: false,
                 message: 'Invalid credentials'
@@ -78,7 +78,7 @@ async function login(req, res, next) {
         const tokenPayload = {
             user_name: checkUserExist.user_name,
             user_type: checkUserExist.user_type,
-            id: checkUserExist._id
+            id: checkUserExist._id.toString()
         }
         //jwt is used to ceate token
         //jwt.sign()expects arg to be either string or object
@@ -90,7 +90,7 @@ async function login(req, res, next) {
             success: true,
             message: "User login successful",
             status: 200,
-            access_token: access_token
+            access_token: access_token,
         })
     } catch(err) {
         return res.json({
@@ -102,4 +102,4 @@ async function login(req, res, next) {
 };
 
 //export two functions which would be exported in the object
-module.exports = createUser, login;
+module.exports = {createUser, login};

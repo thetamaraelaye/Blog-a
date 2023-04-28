@@ -52,14 +52,13 @@ function hasWriteAccess(user_type){
     return ["AUTHOR", "GUEST_AUTHOR"].includes(user_type)
 }
 
-async function fetchArticle(req, res, next) {
+async function fetchArticle(req, res) {
     //the id was referenced in the article schema therefore we will get the article by the id
     //req the id of author or guest author
-    const { id} = req.params; 
+    const {id} = req.params; 
 
     try {
         //use findOne() to find the  articles by author id then populate with all s
-        
         const article = await articleModel.findOne({_id: id}).populate('author','user_name').exec(); //find article by id gotten
             //check if no article was found return an error
             if(!article) {
@@ -78,12 +77,12 @@ async function fetchArticle(req, res, next) {
         return res.json({
             success: false,
             message: `An error occured while fetching article with id ${id}: ${error.message}`,
-            error: error
+            error:error
         })
-    
     }
 }
-async function fetchArticles(req, res, next) {
+async function fetchArticles(req, res) {
+
     try {
         //use await model to find the article
         //populate the fetch findings with all the details of the author that wrote the article
@@ -97,7 +96,7 @@ async function fetchArticles(req, res, next) {
                 message: "Articles",
                 count: articles.length,
                 success: true,
-                article: article
+                article: articles
             })
     } catch (error) {
         return res.json({
@@ -111,12 +110,12 @@ async function fetchArticles(req, res, next) {
 //To Delete Article/Articles
 //You must have access to write an article and you must be the author of the articles you want to delete
 //without permission delete access is denied
-async function deleteArticle(req, res, next) {
+async function deleteArticle(req, res) {
      //the id was referenced in the article schema therefore we will get the article by the id
     //req the id of author or guest author
-    const { id} = req.params;
+    const {id} = req.params;
     //required for the user and his access token
-    const user = req.users;
+    const user = req.user;
 
     try {
         //use findOne() to find the  articles by article id for deletion
@@ -160,6 +159,57 @@ async function deleteArticle(req, res, next) {
     
     }
 }
+
+// async function deleteArticles(req,res) {
+//     //req access to id of author ref. in article schema
+//     const {id} = req.params;
+//     //request access to user
+//     const user = req.user;
+
+//     try {
+//         //use findOne() to find all the  articles by article id for deletion
+//         //populate with id to check if the user is authorised to delete articles 
+//         //i.e all the articles created by this user
+        
+//         const article = await articleModel.find().populate('author', '_id').exec(); //find article by id gotten
+//             //check if no article was found return an error
+//             if(!article) {
+//                 return res.json({
+//                     success: false,
+//                     message: "Article not found",
+//                 })
+//             }
+//             //check if the person has write access because only writers can delete. This would require
+//             //tweaking the findOne by populating it with the user ID's
+//             //user id is not a string, therefore convert id to string and convert it string
+//             //and compare it to the user id ref on the article model instance creaated
+//             const isAuthor = (user.id.toString() === article.author._id.toString()) ? true : false;
+//             // wait for the deletion to occur before returning message in next lines of code
+
+//             //check access 
+//             if (!hasWriteAccess(user.user_type) && !isAuthor){
+//                 res.json({
+//                     message: "Access denied, can't delete the articles written by someone else",
+//                     success: false,
+//                 })
+//             }
+//             await articleModel.deleteMany().exec();
+
+//             return res.json({
+//                 message: `All Articles by ${user.id}} has been deleted`,
+//                 deletedCount: article.length,
+//                 success: true,
+//                 deleted: true,
+//             })
+//     } catch (error) {
+//         return res.json({
+//             success: false,
+//             message: `An error occured while deleting all your articles: ${error.message}`,
+//             error: error
+//         })
+    
+//     }
+// }
 
 
 

@@ -15,7 +15,7 @@ function verifyAuth(req, res, next) {
     //between the access token and Bearer is a space so we would splitthe string into
     //bearer and token where the array it is split into will have 2 elemens
     //token is the second lement witn an index of 1
-    const token = authHeader.split('')[1];
+    const token = authHeader.split(" ")[1];
     //verify the token
     isValidAccessToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
@@ -26,11 +26,10 @@ function verifyAuth(req, res, next) {
             success: false
         })
     }
-
-    //if token has not expired and it is correct
+//if token has not expired and it is correct
     req.user = isValidAccessToken; //now the user has been verified and is available in every route
     //that uses this middleware
     next(); //passes control to the next function
 };
 
-module.Exports = verifyAuth;
+module.exports = verifyAuth;

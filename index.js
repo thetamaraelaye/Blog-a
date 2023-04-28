@@ -6,7 +6,7 @@ const express = require('express');
 //require my routes
 const authRouter = require('./routes/auth.router');
 // const userRouter = require('./routes/user.router');
-// const articleRouter = require('./routes/article.router');
+const articleRouter = require('./routes/article.router');
 
 //bring in mongoose
 const mongoose = require('mongoose');
@@ -36,7 +36,7 @@ app.use(express.json());
 //mount routes
 app.use("/auth", authRouter);
 // app.use("/user", userRouter);
-// app.use("/article", articleRouter);
+app.use("/article", articleRouter);
 
 const PORT = process.env.PORT || 3000;
 

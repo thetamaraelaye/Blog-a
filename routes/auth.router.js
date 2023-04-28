@@ -9,13 +9,10 @@ const authRouter = express.Router();
 const {
     createUser,
      login} = require("../controllers/auth.controller");
+
 // create account is a post request
-authRouter.post('/signup', function(req, res, next) {
-    createUser
-});
+authRouter.post('/signup', createUser);
 // authRouter.post('/login', login);    
-authRouter.post('/login', function(req, res, next) {
-    login
-});
+authRouter.post('/login', login);
 
 module.exports = authRouter;
