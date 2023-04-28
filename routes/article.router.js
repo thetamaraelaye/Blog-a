@@ -5,9 +5,8 @@ const {
 const verifyAuth = require('../middleware/auth.middleware');
 
 articleRouter.post('/create', verifyAuth, createArticle);
-articleRouter.get('/:id', fetchArticle);
+articleRouter.get('post/:id', fetchArticle); //
 articleRouter.get('/all', fetchArticles);
-articleRouter.post('/delete/:id', deleteArticle);
-articleRouter.post('/delete/all', verifyAuth, deleteArticles);
+articleRouter.post('/delete/:id', verifyAuth, deleteArticle);
 
 module.exports = { articleRouter };

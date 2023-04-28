@@ -84,7 +84,7 @@ async function login(req, res, next) {
         //jwt.sign()expects arg to be either string or object
         //second arg is a secret key
         //third arg is when string expires
-        const access_token = jwt.sign(tokenPayload, process.env.JWT_SECRET_KEY, { expiresIn: "5m"} );
+        const access_token = jwt.sign(tokenPayload, process.env.JWT_SECRET_KEY, { expiresIn: "15m"} );
         //if successful
         return res.json({
             success: true,

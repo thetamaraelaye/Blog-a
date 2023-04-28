@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const articleSchema = new mongoose.Schema({
     author: { //ref the user id
         type: mongoose.Schema.Types.ObjectId, //uses 
-        ref: 'userSchema',
+        ref: 'user', //use model name to reference author. This was passed when creating user Model
         required: true,
     },
     title: {

@@ -37,7 +37,8 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-//create a mode to bd used for crud operation
-const userModel = mongoose.model('user', userSchema);
+//create a model to be used for crud operation
+//it was created for CRUD operations therefore it would be used as the reference schema
+const userModel = mongoose.model('user', userSchema); //the name of my model is user and it would be referenced by other schemas
 // export to make it available in the code
 module.exports = userModel;
